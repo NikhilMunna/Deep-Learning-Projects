@@ -1,3 +1,6 @@
+# check jupyter notebook for detailed instructions andd complete functioning ofthe algorithm
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 from testCases_v2 import *
