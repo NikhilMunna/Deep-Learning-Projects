@@ -82,7 +82,7 @@ happyModel = HappyModel(input_shape = (64 , 64 , 3))
 happyModel.compile(optimizer= "Adam" ,metrics= ["accuracy"] ,loss= "mean_squared_error")
 
 # train (fit)
-happyModel.fit(x = X_train , y= Y_train , epochs = 400 , batch_size= 32)
+happyModel.fit(x = X_train , y= Y_train , epochs = 5 , batch_size= 64)
 
 #test
 
