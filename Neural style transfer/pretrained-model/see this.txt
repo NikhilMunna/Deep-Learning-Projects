@@ -1,0 +1,6 @@
+'''
+pretraained model weights are added in weights of trained model in hard disk
+
+i.e local copy(since git file size is limited
+)
+'''
