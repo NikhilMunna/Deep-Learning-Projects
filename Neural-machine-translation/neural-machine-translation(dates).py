@@ -21,6 +21,11 @@ import matplotlib.pyplot as plt
 m = 10000
 dataset, human_vocab, machine_vocab, inv_machine_vocab = load_dataset(m)
 
+Tx = 30
+Ty = 10
+X, Y, Xoh, Yoh = preprocess_data(dataset, human_vocab, machine_vocab, Tx, Ty)
+
+
 '''
 #checking the datsaet
 dataset[:10]
@@ -29,9 +34,6 @@ dataset[:10]
 '''
 #checking the shapes
 
-Tx = 30
-Ty = 10
-X, Y, Xoh, Yoh = preprocess_data(dataset, human_vocab, machine_vocab, Tx, Ty)
 
 print("X.shape:", X.shape)
 print("Y.shape:", Y.shape)
@@ -84,7 +86,7 @@ def one_step_attention(a, s_prev):
     """
     
 
-    #  repeator to repeat s_prev to be of shape (m, Tx, n_s) so that you can concatenate it with all hidden states "a" (≈ 1 line)
+    #  repeator to repeat s_prev to be of shape (m, Tx, n_s) so that you can concatenate it with all hidden states "a"
     s_prev = repeator(s_prev)
     #  concatenator to concatenate a and s_prev on the last axis 
     concat = concatenator([a, s_prev])
@@ -94,7 +96,7 @@ def one_step_attention(a, s_prev):
     energies = densor2(e)
     #  "activator" on "energies" to compute the attention weights "alphas"
     alphas = activator(energies)
-    #  dotor together with "alphas" and "a" to compute the context vector to be given to the next (post-attention) LSTM-cell (≈ 1 line)
+    #  dotor together with "alphas" and "a" to compute the context vector to be given to the next (post-attention) LSTM-cell
     context = dotor([alphas, a])
     
     
@@ -142,11 +144,11 @@ def model(Tx, Ty, n_a, n_s, human_vocab_size, machine_vocab_size):
     # Step 2: Iterate for Ty steps
     for t in range(Ty):
     
-        # Step 2.A: Perform one step of the attention mechanism to get back the context vector at step t (≈ 1 line)
+        # Step 2.A: Perform one step of the attention mechanism to get back the context vector at step t
         context = one_step_attention(a,s)
 
         # Step 2.B: Apply the post-attention LSTM cell to the "context" vector.
-        # Don't forget to pass: initial_state = [hidden state, cell state] 
+
         s, _, c = post_activation_LSTM_cell(context, initial_state=[s,c] )
         
         # Step 2.C: Apply Dense layer to the hidden state output of the post-attention LSTM 
@@ -184,20 +186,19 @@ model.fit([Xoh, s0, c0], outputs, epochs=1, batch_size=100)
 model.load_weights('models/model.h5')
 
 
-
-EXAMPLES = ['3 May 1979', '5 April 09', '21th of August 2016', 'Tue 10 Jul 2007', 'Saturday May 9 2018', 'March 3 2001', 'March 3rd 2001', '1 March 2001']
-for example in EXAMPLES:
+# EXAMPLES = ['3 May 1979', '5 April 09', '21th of August 2016', 'Tue 10 Jul 2007', 'Saturday May 9 2018', 'March 3 2001', 'March 3rd 2001', '1 March 2001']
+# for example in EXAMPLES:
     
-    source = string_to_int(example, Tx, human_vocab)
-    source = np.array(list(map(lambda x: to_categorical(x, num_classes=len(human_vocab)), source))).swapaxes(0,1)
-    prediction = model.predict([source, s0, c0])
-    prediction = np.argmax(prediction, axis = -1)
-    output = [inv_machine_vocab[int(i)] for i in prediction]
+#     source = string_to_int(example, Tx, human_vocab)
+#     source = np.array(list(map(lambda x: to_categorical(x, num_classes=len(human_vocab)), source))).swapaxes(0,1)
+#     print(source.shape)
+#     prediction = model.predict([source, s0, c0])
+#     prediction = np.argmax(prediction, axis = -1)
+#     output = [inv_machine_vocab[int(i)] for i in prediction]
     
-    print("source:", example)
-    print("output:", ''.join(output))
+#     print("source:", example)
+#     print("output:", ''.join(output))
 
-
-#attention map
+# #attention map
 
 attention_map = plot_attention_map(model, human_vocab, inv_machine_vocab, "Tuesday 09 Oct 1993", num = 7, n_s = 64)
