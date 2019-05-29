@@ -1,0 +1,3 @@
+train set and dev set files are added in weights of pretrained models folder in hard disk 
+
+To RUN the model copy those two folders and place in this to run
