@@ -271,13 +271,13 @@ plt.plot(y[0])
 
 
 # Load preprocessed training examples
-X = np.load("./XY_train/X.npy")
-Y = np.load("./XY_train/Y.npy")
+X = np.load("./../../Weights of pretrained models/trigger-word/XY_train/X.npy")
+Y = np.load("./../../Weights of pretrained models/trigger-word/XY_train/Y.npy")
 
 
 # Load preprocessed dev set examples
-X_dev = np.load("./XY_dev/X_dev.npy")
-Y_dev = np.load("./XY_dev/Y_dev.npy")
+X_dev = np.load("./../../Weights of pretrained models/trigger-word/XY_dev/X_dev.npy")
+Y_dev = np.load("./../../Weights of pretrained models/trigger-word/XY_dev/Y_dev.npy")
 
 
 
